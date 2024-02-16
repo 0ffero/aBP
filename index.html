@@ -1,0 +1,96 @@
+<!--
+    Audio Book Player by offer0, OCT 2024 (v0.01)
+    Created by offer0
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AudioBookPlayer</title>
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="assets/font/css2.css">
+    <style type="text/css">
+        body { background-color: #1b1b1b; margin: 0; padding: 0; overflow: hidden; }
+    </style>
+
+    <script src="assets/font/d40a0f0b1f.js"></script>
+
+    <!-- FRAMEWORK & MISC SCRIPTS //-->
+    <script src="js/miscFunctions.js"></script>
+
+    <!-- GAME SCRIPTS //-->
+    <script src="js/consts.js"></script>
+    <script src="js/vars.js"></script>
+
+    
+    <!-- CLASSES //-->
+    <script src="js/classes/AudioVisualiser.js"></script>
+    <script src="js/classes/HTTPRequest.js"></script>
+    <script src="js/classes/Player.js"></script>
+    <script src="js/classes/Playlist.js"></script>
+    <script src="js/classes/Spinner.js"></script>
+    <script src="js/classes/UI.js"></script>
+    
+    
+    <!-- THE SCRIPT THAT STARTS EVERYTHING //-->
+    <script defer src="js/init.js"></script>
+    <script defer src="js/update.js"></script>
+</head>
+<body>
+    <div id="fileList"></div>
+
+    <div id="playerContainer">
+        <div id="audioPlayerContainer" class="hidden"><audio id="audioPlayer" controls></audio></div>
+        <div id="currentTrackAndTime">&nbsp;</div>
+        <div id="volumeSliderContainer">
+            <div>
+                <input type="range" id="volumeSlider" name="volumeSlider" min="0" max="10" value="10" />
+                <label for="volume" id="volumeLabel">Volume</label>
+            </div>
+            <div id="canvasContainer"><canvas id="visCanvas" height="22px" width="128px"></canvas></div>
+            <div id="saveIconContainer"><div id="othersBar"><div id="counterContainer"><i class="fa-solid fa-display"></i><div id="countInt">10</div></div><div id="spinner">&nbsp;</div><img id="saveIcon" src="assets/images/saveIcon.png"><i id="hidePlayer" class="fa-regular fa-square-minus" onclick="vars.player.showPlayerContainer(false)"></i></div></div>
+        </div>
+        <div id="controls">
+            <div id="prevTrack" class="playerButton" onclick="vars.player.buttonClick('previousTrack')"><i class="fa-solid fa-backward"></i></div>
+            <div id="sub10m" class="playerButton" onclick="vars.player.buttonClick('sub10m')">-10m</div>
+            <div id="sub1m" class="playerButton" onclick="vars.player.buttonClick('sub1m')">-1m</div>
+            <div id="sub10s" class="playerButton" onclick="vars.player.buttonClick('sub10s')">-10s</div>
+            <div id="playPause" class="playerButton" onclick="vars.player.buttonClick('playPause')"><i class="fa-solid fa-play"></i></div>
+            <div id="inc10s" class="playerButton" onclick="vars.player.buttonClick('inc10s')">+10s</div>
+            <div id="inc1m" class="playerButton" onclick="vars.player.buttonClick('inc1m')">+1m</div>
+            <div id="inc10m" class="playerButton" onclick="vars.player.buttonClick('inc10m')">+10m</div>
+            <div id="nextTrack" class="playerButton" onclick="vars.player.buttonClick('nextTrack')"><i class="fa-solid fa-forward"></i></div>
+        </div>
+        <div id="positionBarContainer" onmousedown="vars.player.positionBarClick(event,this)">
+            <div id="positionBar"></div>
+        </div>
+        <div id="playList"></div>
+    </div>
+
+    <div id="playingContainer" class="hidden">
+        <div id="currentTrackData">
+            <div id="bookName">Book name will be here</div>
+            <div id="chapterName">Chapter name will be here</div>
+            <div id="performer">Performer name will be here</div>
+            <div id="currentTrackAndPosition">Current track and position will be here</div>
+            <div id="releaseDate">Release date will be here</div>
+            <div id="recordedDate">Recorded date will be here</div>
+            <div id="synopsis">Synopsis will be here</div>
+            <div id="readBy">Read by will be here</div>
+            <div id="currentTrackEndTime">Track end time will be here</div>
+            <div id="audioDetail">Audio detail will be here</div>
+        </div>
+        <div id="bookImageContainer"><img id="bookImage" src="assets/images/noBookImage.png" /></div>
+    </div>
+
+    <div id="currentPositionContainer" class="hidden"><div id="currentPosition">0h 00m 00s of 0h 00m 00s</div></div>
+
+    <div id="volumeContainer" class="hidden">
+        <div id="volumeIcon"><img id="vII" src="assets/images/volumeIcon.png" /></div>
+        <div id="volumeInteger"></div>
+    </div>
+
+    <div id="showPlayer" class="hidden" onclick="vars.player.showPlayerContainer()">SHOW PLAYER</div>
+</body>
+</html>
