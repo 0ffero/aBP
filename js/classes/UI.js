@@ -7,7 +7,9 @@ let UI = class {
         switch (this.type) {
             case 'folderList':
                 this.html = '';
-                this.audioBookListDiv = gID('fileList');
+                let fL = this.audioBookListDiv = gID('fileList');
+                let padding = 128;
+                fL.style.height = `${window.innerHeight-padding}px`;
                 valid = true;
             break;
 
@@ -104,6 +106,9 @@ let UI = class {
         this.audioBooks = _fL;
 
         this.createFolderList();
+
+        // all files have loaded, hide the loading screen
+        vars.UI.loadingContainer.hide();
     }
 
     createFolderList() {
@@ -123,7 +128,7 @@ let UI = class {
             let selectedIndex = index>=0 ? recent[index].currentIndex : -1;
 
             html += `   <div class="folderLine">
-                            <div class="currentStatus ${statusClass}">&nbsp;</div><div class="addAll clickable" onclick="vars.playListClass.addTracksToPlayList('${folderSafe}')">Add All Tracks</div>
+                            <div data-folder="${folderSafe}" class="currentStatus ${statusClass}">&nbsp;</div><div class="addAll clickable" onclick="vars.playListClass.addTracksToPlayList('${folderSafe}')">Add All Tracks</div>
                             <div class="folderName clickable" onclick="vars.UI.folderList.switchTrackVisibility(this.parentNode.parentNode.getElementsByClassName('trackList')[0])">${folder}</div>
                         </div>`; // end of folder line
             // add the track list
@@ -137,6 +142,27 @@ let UI = class {
         });
 
         this.audioBookListDiv.innerHTML = html;
+    }
+
+    flashCurrentStatusDiv(lookingFor) {
+        if (!lookingFor) return;
+
+        let cS = document.getElementsByClassName('currentStatus');
+
+        let found = false;
+        for (let i=0; i<cS.length; i++) {
+            if (found) return;
+
+            if (cS[i].dataset.folder===lookingFor) {
+                !cS[i].className.includes('cSMidFlash') && (cS[i].className += ' cSMidFlash', found=true);
+            };
+        };
+    }
+
+    flashStopCurrentStatusDiv() {
+        let mF = document.getElementsByClassName('cSMidFlash');
+        if (!mF.length) return;
+        mF[0].className = mF[0].className.replace(' cSMidFlash','');
     }
 
     highlightCurrentlyPlaying() {

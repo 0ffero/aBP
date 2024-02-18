@@ -1,5 +1,5 @@
 <!--
-    Audio Book Player by offer0, OCT 2024 (v0.01)
+    Audio Book Player 2 by offer0, OCT 2024 (v0.01)
     Created by offer0
 -->
 <!DOCTYPE html>
@@ -38,6 +38,10 @@
     <script defer src="js/update.js"></script>
 </head>
 <body>
+    <div id="headingContainer">
+        <img id="logo" src="assets/images/logo.png" />
+        <div id="versionText">Version 1.00</div>
+    </div>
     <div id="fileList"></div>
 
     <div id="playerContainer">
@@ -92,5 +96,10 @@
     </div>
 
     <div id="showPlayer" class="hidden" onclick="vars.player.showPlayerContainer()">SHOW PLAYER</div>
+
+    <div id="loadingScreen">
+        <div id="l_logo"><img id="i_logo" src="assets/images/logo.png" /></div>
+        <div id="l_version">Version </div>
+    </div>
 </body>
 </html>

@@ -9,12 +9,84 @@ let Player = class {
     }
 
     init() {
-        this.getAudioButtons();
-        this.getAudioPlayer();
-        this.getOtherDivs();
+        this.initGetAudioButtons();
+        this.initGetAudioPlayer();
+        this.initGetOtherDivs();
 
         // add reference to the playlist
         this.playListClass = vars.playListClass;
+    }
+
+    initGetAudioButtons() {
+        let gID = this.gID;
+        this.playPauseDiv = gID('playPause');
+    }
+
+    initGetAudioPlayer() {
+        let aP = this.audioPlayer = this.gID('audioPlayer');
+
+        aP.addEventListener("ended", () => {
+            // the track has ended. stop the SAVE interval
+            vars.App.clearAllTimeouts();
+            vars.UI.folderList.flashStopCurrentStatusDiv();
+            vars.playListClass.loadingRecent = 0;
+            // and get the next track
+            vars.player.playNext();
+        });
+        aP.addEventListener("canplay", () => { // the track's loaded and ready to play
+            let pV = vars.player;
+            if (!pV.loading) return; // make sure this only fires once per load
+
+            pV.loading = false;
+
+            // flash the current status div for this folder
+            vars.UI.folderList.flashCurrentStatusDiv(vars.playListClass.folder);
+            // highlight the loaded track
+            vars.playListClass.highlightCurrentlyPlaying();
+            // check if we are loading a recent book
+            let pLC = vars.playListClass;
+            let percent = pLC.loadingRecent;
+            aP.currentTime = percent * aP.duration;
+            pLC.loadingRecent=0; // reset loading recent var
+
+            aP.play(); // start playing it
+            // switch play icon to pause icon
+            this.playPauseDiv.innerHTML='<i class="fa-solid fa-pause"></i>';
+
+            // update the screen savers data
+            let pCC = vars.UI.playingContainerClass;
+            pCC.addDataToDataDiv();
+
+            let fL = vars.UI.folderList;
+            fL.highlightCurrentlyPlaying();
+
+            pLC.savePlayListDO(); // save the track position and start the timeout
+            pV.updatePositionBar(); // start the updates to the position bar
+        });
+    }
+
+    initGetOtherDivs() {
+        let gID = this.gID;
+
+        this.playListContainer = gID('playerContainer');
+        this.playList = gID('playList');
+        this.setPlayListHeight();
+
+        this.positionBar = gID('positionBar');
+        this.positionBar.maxWidth=580; // used to scale to the current position in track
+
+        this.currentTrackAndTime = gID('currentTrackAndTime');
+
+        this.saveIconImg = gID('saveIcon');
+
+        this.showPlayerButtonDiv = gID('showPlayer');
+
+        this.countIntDiv = gID('countInt');
+
+        let vC = this.volumeControl = gID('volumeSlider');
+        vC.value = vars.App.volume;
+        vC.addEventListener("input", (event) => { vars.audio.setVolume(event.target.value); });
+        vC.addEventListener('keydown', (e)=> { e.preventDefault(); return; }); // disable key presses on this div
     }
 
     buttonClick(which) {
@@ -55,76 +127,6 @@ let Player = class {
 
     clearUpdatePositionTimeout() {
         clearInterval(this.updatePosTimeout);
-    }
-
-    getAudioButtons() {
-        let gID = this.gID;
-        this.playPauseDiv = gID('playPause');
-    }
-
-    getAudioPlayer() {
-        let aP = this.audioPlayer = this.gID('audioPlayer');
-
-        aP.addEventListener("ended", () => {
-            // the track has ended. stop the SAVE interval
-            vars.App.clearAllTimeouts();
-            vars.playListClass.loadingRecent = 0;
-            // and get the next track
-            vars.player.playNext();
-        });
-        aP.addEventListener("canplay", () => { // the track's loaded and ready to play
-            let pV = vars.player;
-            if (!pV.loading) return; // make sure this only fires once per load
-
-            pV.loading = false;
-            // highlight the loaded track
-            vars.playListClass.highlightCurrentlyPlaying();
-            // check if we are loading a recent book
-            let pLC = vars.playListClass;
-            let percent = pLC.loadingRecent;
-            aP.currentTime = percent * aP.duration;
-            pLC.loadingRecent=0; // reset loading recent var
-
-            aP.play(); // start playing it
-            // switch play icon to pause icon
-            this.playPauseDiv.innerHTML='<i class="fa-solid fa-pause"></i>';
-
-            // update the screen savers data
-            let pCC = vars.UI.playingContainerClass;
-            pCC.addDataToDataDiv();
-
-            let fL = vars.UI.folderList;
-            fL.highlightCurrentlyPlaying();
-
-            pLC.savePlayListDO(); // save the track position and start the timeout
-            pV.updatePositionBar(); // start the updates to the position bar
-        });
-    }
-
-    getOtherDivs() {
-        let gID = this.gID;
-
-        this.playListContainer = gID('playerContainer');
-        this.playList = gID('playList');
-        this.setPlayListHeight();
-
-        this.positionBar = gID('positionBar');
-        this.positionBar.maxWidth=580; // used to scale to the current position in track
-
-        this.currentTrackAndTime = gID('currentTrackAndTime');
-
-        this.saveIconImg = gID('saveIcon');
-
-        this.showPlayerButtonDiv = gID('showPlayer');
-
-        this.countIntDiv = gID('countInt');
-
-        let vC = this.volumeControl = gID('volumeSlider');
-        vC.value = vars.App.volume;
-        vC.addEventListener("input", (event) => {
-            vars.audio.setVolume(event.target.value);
-        });
-        vC.addEventListener('keydown', (e)=> { e.preventDefault(); return; }); // disable key presses on this div
     }
 
     getTrackPosition(percent=true) {
@@ -208,7 +210,12 @@ let Player = class {
     }
 
     setPlayListHeight() {
-        this.playList.style.height = `${window.innerHeight - 245}px`;
+        let pL = this.playList;
+        let marginsTotal = 5*10; // 2 uppies, 3 downies
+        let topOffset = pL.offsetHeight;
+        let totalMargin = topOffset + marginsTotal;
+
+        pL.style.height = `${window.innerHeight - totalMargin}px`;
     }
 
     showPlayerContainer(show=true) {

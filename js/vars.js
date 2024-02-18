@@ -1,6 +1,6 @@
 "use strict"
 var vars = {
-    version: 1.0,
+    version: '1.02',
 
     DEBUG: true,
 
@@ -84,6 +84,7 @@ var vars = {
 
     App: {
         init: ()=> {
+            vars.getElementByID('versionText').innerHTML = `Version ${vars.version}`;
             vars.localStorage.init();
             vars.input.init();
             vars.UI.init();
@@ -210,11 +211,30 @@ var vars = {
         init: ()=> {
             let ui = vars.UI;
 
+            // loading screen
+            ui.initLoadingScreen();
+
             ui.playingContainerClass = new UI('playingContainer');
 
             ui.volumeClass = new UI('volumeContainer');
 
             ui.visualiser = new AudioVisualiser();
+        },
+
+        initLoadingScreen: ()=> {
+            let gID = vars.getElementByID;
+            let c = vars.UI.loadingContainer = gID('loadingScreen');
+            let vDiv = gID('l_version');
+            vDiv.innerHTML = `Version ${vars.version}`;
+
+            c.hide = ()=> {
+                let delay = 2000; // how long the loading screen anim takes (set in css)
+                c.className = 'l_hide';
+
+                setTimeout(()=> {
+                    c.remove();
+                }, delay);
+            };
         }
     }
 };

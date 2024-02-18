@@ -12,6 +12,21 @@ div {
     display: flex;
 }
 
+#headingContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#logo {
+    zoom: 0.5;
+}
+
+#versionText {
+    color: #8db8d7;
+    margin-left: 15px;
+}
+
 #fileList {
     background-color: #080621;
     color: #d3d3d3;
@@ -26,6 +41,8 @@ div {
 }
 
 .addAll {
+    transition: 500ms;
+
     background-color: #080621;
     border: 1px solid #0b4e6f;
     border-radius: 8px;
@@ -35,6 +52,7 @@ div {
 }
 .addAll:hover {
     background: linear-gradient(90deg, rgba(0,26,36,1) 0%, rgba(0,93,93,1) 50%, rgba(0,26,36,1) 100%);
+    border: 1px solid #8db8d7;
 }
 
 .clickable {
@@ -58,8 +76,22 @@ div {
 }
 
 .cSMid {
+    transition: 1s;
     background-color: #666666;
     border: 2px solid #00f90d;
+}
+
+@keyframes cSMidFlash {
+    0%   { background-color: #666666 }
+    50%  { background-color: #0b4e6f }
+    100% { background-color: #666666 }
+}
+.cSMidFlash {
+    animation-name: cSMidFlash;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+
+    background-color: #666666;
 }
 
 .cSComplete {
@@ -192,6 +224,7 @@ audio {
     transition: 1s;
 
     background-color: rgba(0,0,0,0.1);
+    border: 2px solid #0c2d45;
     flex-direction: column;
     margin: 10px;
     padding: 10px;
@@ -202,7 +235,8 @@ audio {
 }
 
 #playerContainer:hover {
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(8,6,33,0.8);
+    border: 2px solid #0b4e6f;
 }
 
 .playerButton {
@@ -254,7 +288,7 @@ audio {
     50%  { opacity: 1 }
     75%  { opacity: 0 }
     100% { opacity: 1 }
-  }
+}
   
   /* The element to apply the animation to */
 .saveIconFlash {
@@ -421,3 +455,34 @@ audio {
     border: 2px solid #8DB8D7 !important;
     background-color: #0b4e6f;
 }
+/* ******* */
+
+
+/* Loading Screen */
+#loadingScreen {
+    transition: 2s;
+
+    background-color: #0c2d45;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.l_hide {
+    top: 1300px !important;
+}
+
+#l_logo {
+
+}
+
+#l_version{
+    color: #0b4e6f;
+    font-size: 24px;
+}
+/* ************** */

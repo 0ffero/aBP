@@ -11,8 +11,8 @@ this.AudioVisualiser = class {
         this.canvas = this.gID("visCanvas");
         this.canvasCtx = this.canvas.getContext("2d");
 
-        this.fftSize = 128;
-        this.barWidth = this.canvas.width / this.fftSize;
+        this.fftSize = 512;
+        this.barWidth = this.canvas.width / 64;
 
         this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -45,8 +45,8 @@ this.AudioVisualiser = class {
             
             let actualHeight = barHeight/max*cH|0;
 
-            this.canvasCtx.fillRect(currentX, this.canvas.height - actualHeight, this.barWidth*2, actualHeight);
-            currentX = 2*i*this.barWidth;
+            this.canvasCtx.fillRect(currentX, this.canvas.height - actualHeight, this.barWidth, actualHeight);
+            currentX += this.barWidth;
         };
     }
 
@@ -80,7 +80,7 @@ this.AudioVisualiser = class {
 
         this.updateInterval = setInterval(()=> {
             this.animate();
-        }, 100);
+        }, 1000/60);
     }
 
 };
