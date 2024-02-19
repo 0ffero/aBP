@@ -21,19 +21,19 @@ this.AudioVisualiser = class {
     }
 
 
-    animate() { // runs every 100ms
+    animate() {
         if (this.audioPlayer.paused) return;
         this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
         const bufferLength = this.analyser.frequencyBinCount; // the number of data values that dictate the number of bars in the canvas. Always exactly one half of the fft size
-        const dataArray = new Uint8Array(bufferLength); // covert to 8-bit integer array
+        const dataArray = new Uint8Array(bufferLength); // convert to 8-bit integer array
 
         let cH = this.canvas.height;
         let max = 255;
         let barHeight;
 
         let currentX = 0;
-        this.analyser.getByteFrequencyData(dataArray); // copies frequency data into the dataArray
+        this.analyser.getByteFrequencyData(dataArray); // copy frequency data into the dataArray
 
         for (let i = 0; i < bufferLength; i++) {
             barHeight = dataArray[i];

@@ -40,7 +40,8 @@
 <body>
     <div id="headingContainer">
         <img id="logo" src="assets/images/logo.png" />
-        <div id="versionText">Version 1.00</div>
+        <div id="versionText">Version 0.00</div>
+        <img id="recent" src="assets/images/recent.png" onclick="vars.UI.recentListClass.showRecentList()" />
     </div>
     <div id="fileList"></div>
 
@@ -57,13 +58,13 @@
         </div>
         <div id="controls">
             <div id="prevTrack" class="playerButton" onclick="vars.player.buttonClick('previousTrack')"><i class="fa-solid fa-backward"></i></div>
-            <div id="sub10m" class="playerButton" onclick="vars.player.buttonClick('sub10m')">-10m</div>
-            <div id="sub1m" class="playerButton" onclick="vars.player.buttonClick('sub1m')">-1m</div>
-            <div id="sub10s" class="playerButton" onclick="vars.player.buttonClick('sub10s')">-10s</div>
+            <div id="sub10m"    class="playerButton" onclick="vars.player.buttonClick('sub10m')">-10m</div>
+            <div id="sub1m"     class="playerButton" onclick="vars.player.buttonClick('sub1m')">-1m</div>
+            <div id="sub10s"    class="playerButton" onclick="vars.player.buttonClick('sub10s')">-10s</div>
             <div id="playPause" class="playerButton" onclick="vars.player.buttonClick('playPause')"><i class="fa-solid fa-play"></i></div>
-            <div id="inc10s" class="playerButton" onclick="vars.player.buttonClick('inc10s')">+10s</div>
-            <div id="inc1m" class="playerButton" onclick="vars.player.buttonClick('inc1m')">+1m</div>
-            <div id="inc10m" class="playerButton" onclick="vars.player.buttonClick('inc10m')">+10m</div>
+            <div id="inc10s"    class="playerButton" onclick="vars.player.buttonClick('inc10s')">+10s</div>
+            <div id="inc1m"     class="playerButton" onclick="vars.player.buttonClick('inc1m')">+1m</div>
+            <div id="inc10m"    class="playerButton" onclick="vars.player.buttonClick('inc10m')">+10m</div>
             <div id="nextTrack" class="playerButton" onclick="vars.player.buttonClick('nextTrack')"><i class="fa-solid fa-forward"></i></div>
         </div>
         <div id="positionBarContainer" onmousedown="vars.player.positionBarClick(event,this)">
@@ -95,11 +96,16 @@
         <div id="volumeInteger"></div>
     </div>
 
-    <div id="showPlayer" class="hidden" onclick="vars.player.showPlayerContainer()">SHOW PLAYER</div>
+    <div id="showPlayer" class="hidden" onclick="vars.player.showPlayerContainer()">SHOW<br/>PLAYER</div>
 
     <div id="loadingScreen">
         <div id="l_logo"><img id="i_logo" src="assets/images/logo.png" /></div>
         <div id="l_version">Version </div>
+    </div>
+
+    <div id="recentListContainer" onclick="vars.UI.recentListClass.showRecentList(false)">
+        <div id="recentsHeader">RECENT LIST</div>
+        <div id="recents"></div>
     </div>
 </body>
 </html>

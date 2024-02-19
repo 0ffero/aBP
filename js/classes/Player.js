@@ -133,7 +133,7 @@ let Player = class {
         let aP = this.audioPlayer;
         // if theres no duration (no song loaded) return 0 for time and percent;
         // otherwise if we're not returning a percentage, return current time else return percent
-        let retVal = !aP.duration ? 0 : !percent ? aP.currentTime : (aP.currentTime/aP.duration*100000|0)/100000;
+        let retVal = !aP.duration ? 0 : !percent ? aP.currentTime|0 : (aP.currentTime/aP.duration*100000|0)/100000;
         
         return retVal;
     }
@@ -221,7 +221,7 @@ let Player = class {
     showPlayerContainer(show=true) {
         let pLC = this.playListContainer;
 
-        let translateString = show ? `translate(0px, 0px)` : `translate(640px, 0px)`;
+        let translateString = show ? `translate(0px, 0px)` : `translate(654px, 0px)`;
         pLC.style.transform = translateString;
 
         this.showPlayerButtonDiv.className='hidden';

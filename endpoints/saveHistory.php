@@ -7,7 +7,7 @@ if (!isset($_POST['history'])) { // history wasnt passed
     exit;
 };
 
-$cacheDir = './cache/history/';
+$cacheDir = './cache/';
 if (!is_dir($cacheDir)) { mkdir($cacheDir); };
 
 $history = $_POST['history'];

@@ -19,6 +19,11 @@ let UI = class {
                 valid = true;
             break;
 
+            case 'recentListContainer':
+                this.initRecentList()
+                valid = true;
+            break;
+
             case 'volumeContainer':
                 this.initVolumeContainer();
                 valid = true;
@@ -83,6 +88,14 @@ let UI = class {
             let div = gID(id);
             this.dataDivs.push({ id: id, div: div });
         });
+    }
+
+    initRecentList() {
+        let gID = this.gID;
+        this.rL = gID('recentListContainer');
+        this.rLList = gID('recents');
+
+        this.buildRecentList();
     }
 
     initVolumeContainer() {
@@ -357,6 +370,54 @@ let UI = class {
     }
     /* ********************************* */
 
+
+    /* ****** RECENT FUNCTIONS ********* */
+    buildRecentList() {
+        let div = this.rLList;
+
+        let recentList = [...vars.playLists.recent];
+        recentList = arraySortByKey(recentList,'lastAccessed').reverse();
+
+        let html = '';
+        recentList.forEach((b)=> {
+            if (b.complete) return;
+            let bookName = b.folder;
+            let lastAccessed = this.convertLastAccessedToReadable(b.lastAccessed);
+
+            let currentTrackText = `Track: ${b.currentIndex+1} of ${b.trackCount}`;
+            // get track position time
+            let toHMS = vars.App.convertToHMS;
+            let pos = toHMS(b.trackPositionInSeconds);
+            let dur = toHMS(b.duration);
+            let posText = `${pos.h}:${pos.m}:${pos.s} of ${dur.h}:${dur.m}:${dur.s}`;
+            
+            html += `<div class="recentLine" onclick="vars.playListClass.addTracksToPlayList('${bookName}')">
+                <div class="rl_bookName">${bookName}</div>
+                <div class="rl_currentTrack">${currentTrackText}</div>
+                <div class="rl_currentTime">${posText}</div>
+                <div class="rl_lastAccessed">${lastAccessed}</div>
+            </div>`;
+        });
+
+        div.innerHTML = html;
+
+        this.showRecentList(false);
+    }
+
+    convertLastAccessedToReadable(lastAccessed) {
+        lastAccessed = (lastAccessed.substring(0, 8) + "T" + lastAccessed.substring(8)).split('T'); // add T, then split
+        // get date and time, then join
+        let date = lastAccessed[0].substring(6,8) + '/' + lastAccessed[0].substring(4,6) + '/' + lastAccessed[0].substring(0,4);
+        let time = lastAccessed[1].substring(0,2) + ':' + lastAccessed[1].substring(2,4) + ':' + lastAccessed[1].substring(4,6);
+        let dateTime = `${time} - ${date}`;
+        return dateTime;
+    }
+
+    showRecentList(show=true) {
+        let className = show ? 'rLCShow' : '';
+        this.rL.className = className;
+    }
+    /* ********************************* */
 
 
     /* ******  Volume functions  ****** */

@@ -13,9 +13,10 @@ div {
 }
 
 #headingContainer {
+    align-items: center;
+    column-gap: 60px;
     display: flex;
     flex-direction: row;
-    align-items: center;
 }
 
 #logo {
@@ -23,7 +24,11 @@ div {
 }
 
 #versionText {
+    align-items: center;
     color: #8db8d7;
+    flex-direction: column;
+    height: 128px;
+    justify-content: space-around;
     margin-left: 15px;
 }
 
@@ -83,7 +88,7 @@ div {
 
 @keyframes cSMidFlash {
     0%   { background-color: #666666 }
-    50%  { background-color: #0b4e6f }
+    50%  { background-color: #ff8800 }
     100% { background-color: #666666 }
 }
 .cSMidFlash {
@@ -229,13 +234,13 @@ audio {
     margin: 10px;
     padding: 10px;
     position: fixed;
-    right: 20px;
+    right: 12px;
     top: 0;
     width: 600px;
 }
 
 #playerContainer:hover {
-    background-color: rgba(8,6,33,0.8);
+    background-color: rgba(8,6,33,0.95);
     border: 2px solid #0b4e6f;
 }
 
@@ -253,7 +258,7 @@ audio {
 }
 
 .playerButton:hover {
-    box-shadow: 0px 0px 6px 2px #959eff;
+    box-shadow: 0px 0px 0px 2px #4CA5FF;
     scale: 1.1;
 }
 
@@ -301,17 +306,18 @@ audio {
 #showPlayer {
     background-color: #0C2D45;
     border: 2px solid #0b4e6f;
-    border-radius: 5px 5px 0 0px;
+    border-radius: 5px 5px 0 0;
     color: #8db8d7;
     cursor: pointer;
+    font-weight: bold;
     justify-content: center;
     padding: 5px;
     position: fixed;
     right: -32px;
     text-align: center;
-    top: 51px;
+    top: 36px;
     transform: rotate(270deg);
-    width: 115px;
+    width: 100px;
 }
 
 #visCanvas {
@@ -471,6 +477,8 @@ audio {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+
+    z-index: 999; /* this will ALWAYS be the highest index */
 }
 
 .l_hide {
@@ -482,7 +490,87 @@ audio {
 }
 
 #l_version{
+    align-items: center;
     color: #0b4e6f;
+    flex-direction: column;
     font-size: 24px;
 }
 /* ************** */
+
+
+
+/* ** Recent ** */
+.h_1 {
+    clip-path: inset(0px 228px 0px   0px);
+}
+.h_2 {
+    clip-path: inset(0px 167px 0px  51px);
+}
+.h_3 {
+    clip-path: inset(0px 117px 0px 112px);
+}
+.h_4 {
+    clip-path: inset(0px  51px 0px 161px);
+}
+.h_5 {
+    clip-path: inset(0px  0px  0px 228px);
+}
+
+#recent {
+    cursor: pointer;
+}
+
+#recents {
+    background-color: #080621;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    width: 100vw;
+    z-index: 30;
+}
+
+#recentListContainer {
+    transition :1s;
+
+    background-color: #080621;
+    color: #8db8d7;
+    flex-direction: column;
+    height: 100vh;
+    left: 0;
+    overflow-y: auto;
+    position: fixed;
+    top: 0;
+    transform: translate(0px, 100vh);
+    width: 100vw;
+    z-index: 30;
+}
+
+.rLCShow {
+    transform: translate(0px, 0px) !important;
+}
+
+#recentsHeader {
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.recentLine {
+    background-color: #162c45;
+    border: 1px solid #234c6e;
+    justify-content: space-between;
+    margin: 5px;
+    padding: 10px 15px;
+}
+
+.rl_bookName {
+    width: 50%;
+}
+
+.rl_currentTrack {
+    width: 15%;
+}
+/* ************ */

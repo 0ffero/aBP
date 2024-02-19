@@ -43,6 +43,9 @@ let Playlist = class {
         };
     }
     addTracksToPlayList(folder) {
+        // stop the flashing "currently playing"if it exists
+        vars.UI.folderList.flashStopCurrentStatusDiv();
+
         this.folder = folder;
         
         // get more info for this folder
@@ -125,12 +128,20 @@ let Playlist = class {
     getPositionInTrack() {
         return vars.player.getTrackPosition();
     }
+    
+    getPositionInTrackInSeconds() {
+        return vars.player.getTrackPosition(false);
+    }
 
     getPlayListTrackNameFromCurrentIndex() {
         let fName = this.getPlayListFileNameFromCurrentIndex().split('.');
         fName.pop(); // remove extension
         fName = fName.join('.'); // and join again
         return fName;
+    }
+
+    getTrackDuration() {
+        return vars.player.audioPlayer.duration+1|0;
     }
 
     highlightCurrentlyPlaying() {
@@ -169,10 +180,18 @@ let Playlist = class {
     // however, you can request it at any time
     // such as when pausing,starting/restarting,skipping etc
     savePlayListDO() {
+        if (!this.folder) {
+            console.error(`A save was requested but the folder is empty!\nThis means the save was requested when no audio book was loaded.\nDisabling the save playlist timeout.`);
+            return;
+        };
+
         this.trackPosition = this.getPositionInTrack();
+        let seconds = this.getPositionInTrackInSeconds();
+        let duration = this.getTrackDuration();
+        let totalChapters = this.playList.length;
 
         let cD = vars.App.getCurrentDateAndTime();
-        let pLData = { folder: this.folder, currentIndex: this.currentlyPlayingIndex, trackPositionAsPercentage: this.trackPosition, complete: false, lastAccessed: cD };
+        let pLData = { folder: this.folder, currentIndex: this.currentlyPlayingIndex, trackCount: totalChapters, trackPositionAsPercentage: this.trackPosition, trackPositionInSeconds: seconds, duration: duration, complete: false, lastAccessed: cD };
         vars.playLists.updatePlayLists(pLData);
 
         if (this.savePlayListTimeout) {
@@ -190,7 +209,7 @@ let Playlist = class {
         };
 
         let cD = vars.App.getCurrentDateAndTime();
-        let pLData = { folder: this.folder, currentIndex: 0, trackPositionAsPercentage: 0, complete: true, lastAccessed: cD };
+        let pLData = { folder: this.folder, currentIndex: 0, trackCount: 0, trackPositionAsPercentage: 0, trackPositionInSeconds: 0, duration: 0, complete: true, lastAccessed: cD };
         vars.playLists.updatePlayLists(pLData);
     }
 

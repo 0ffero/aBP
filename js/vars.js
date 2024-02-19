@@ -1,6 +1,6 @@
 "use strict"
 var vars = {
-    version: '1.02',
+    version: '1.03',
 
     DEBUG: true,
 
@@ -84,7 +84,6 @@ var vars = {
 
     App: {
         init: ()=> {
-            vars.getElementByID('versionText').innerHTML = `Version ${vars.version}`;
             vars.localStorage.init();
             vars.input.init();
             vars.UI.init();
@@ -102,6 +101,18 @@ var vars = {
             h.getFiles();
         },
 
+        // Currently unused. This is an animation that can be attached to the history image to make it walk :)
+        animateHistoryIcon: ()=> {
+            let gID = vars.getElementByID;
+            let recent = gID('recent');
+            var frame = 1;
+            setInterval(()=> {
+                frame>5 && (frame=1);
+                recent.className = `h_${frame}`;
+                frame++;
+            },333)
+        },
+
         clearAllTimeouts() {
             vars.player.clearUpdatePositionTimeout();
             vars.playListClass.clearSaveListTimeout();
@@ -113,6 +124,7 @@ var vars = {
                 h = (seconds/3600|0).toString();
                 seconds%=3600;
             };
+            h = h.toString();
             let m = (seconds/60|0).toString().padStart(2,'0');
             let s = (seconds%60|0).toString().padStart(2,'0');
 
@@ -214,6 +226,8 @@ var vars = {
             // loading screen
             ui.initLoadingScreen();
 
+            ui.recentListClass = new UI('recentListContainer');
+
             ui.playingContainerClass = new UI('playingContainer');
 
             ui.volumeClass = new UI('volumeContainer');
@@ -222,10 +236,14 @@ var vars = {
         },
 
         initLoadingScreen: ()=> {
+            let tag = LZString.decompress(consts.ego);
             let gID = vars.getElementByID;
             let c = vars.UI.loadingContainer = gID('loadingScreen');
             let vDiv = gID('l_version');
-            vDiv.innerHTML = `Version ${vars.version}`;
+            let vText = `<div>${tag}</div><div>Version ${vars.version}</div>`;
+            vDiv.innerHTML = vText;
+
+            vars.getElementByID('versionText').innerHTML = `<div>aBP 2</div>${vText}`;
 
             c.hide = ()=> {
                 let delay = 2000; // how long the loading screen anim takes (set in css)

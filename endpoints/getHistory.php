@@ -4,7 +4,7 @@ include('jsonHeaders.php');
 $count = !isset($_POST['count']) ? 5 : $_POST['count'];
 
 $dateString = date('YmdHis');
-$hFolder = './cache/history/';
+$hFolder = './cache/';
 
 $hFiles = scandir($hFolder, SCANDIR_SORT_DESCENDING);
 
