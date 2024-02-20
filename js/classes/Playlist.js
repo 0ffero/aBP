@@ -14,6 +14,11 @@ let Playlist = class {
 
         this.folder = '';
         this.playList = [];
+        
+        // every 6 saves (which occur every 10s) the playlists flush to disk is reduced
+        this.fTDMinutes = 5; // save to disk every 5 minutes
+        this.flushToDisk = 6 * this.fTDMinutes;
+        this.flushToDiskMax = this.flushToDisk;
 
         this.autoplay = true;
         this.currentlyPlayingIndex = -1;
@@ -100,6 +105,22 @@ let Playlist = class {
         div.className = 'playlistEntry pLhighlighted';
 
         debugger;
+    }
+
+    flushToDiskDO() {
+        let history = vars.playLists.recent;
+        let x = new HTTPRequest();
+        x.saveHistory(history);
+        console.log(`%cRecent list has been flushed to disk (server)`,'color: #30ff30;');
+    }
+
+    flushToDiskReduce() {
+        this.flushToDisk--;
+        if (this.flushToDisk) return;
+
+        this.flushToDisk = this.flushToDiskMax; // reset the counter
+
+        this.flushToDiskDO();
     }
 
     getMoreInfoForFolder() {
@@ -198,6 +219,8 @@ let Playlist = class {
             clearTimeout(this.savePlayListTimeout);
             delete(this.savePlayListTimeout);
         };
+
+        this.flushToDiskReduce();
 
         this.savePlayList();
     }

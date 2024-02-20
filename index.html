@@ -53,7 +53,7 @@
                 <input type="range" id="volumeSlider" name="volumeSlider" min="0" max="10" value="10" />
                 <label for="volume" id="volumeLabel">Volume</label>
             </div>
-            <div id="canvasContainer"><canvas id="visCanvas" height="22px" width="128px"></canvas></div>
+            <div id="canvasContainer" onclick="vars.UI.visualiser.switchVisualiserType()"><canvas id="visCanvas" height="22px" width="128px"></canvas></div>
             <div id="saveIconContainer"><div id="othersBar"><div id="counterContainer"><i class="fa-solid fa-display"></i><div id="countInt">10</div></div><div id="spinner">&nbsp;</div><img id="saveIcon" src="assets/images/saveIcon.png"><i id="hidePlayer" class="fa-regular fa-square-minus" onclick="vars.player.showPlayerContainer(false)"></i></div></div>
         </div>
         <div id="controls">

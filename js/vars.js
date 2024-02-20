@@ -1,6 +1,6 @@
 "use strict"
 var vars = {
-    version: '1.03',
+    version: '1.05',
 
     DEBUG: true,
 
@@ -32,6 +32,11 @@ var vars = {
                 lS[`${lV.pre}_recent`] = JSON.stringify(pV.recent);
             };
             pV.recent = JSON.parse(lS[`${lV.pre}_recent`]);
+
+            if (!lS[`${lV.pre}_volume`]) {
+                lS[`${lV.pre}_volume`] = 10;
+            };
+            vars.App.volume = lS[`${lV.pre}_volume`]*1;
 
             if (!lS[`${lV.pre}_volume`]) {
                 lS[`${lV.pre}_volume`] = 10;
@@ -232,13 +237,16 @@ var vars = {
 
             ui.volumeClass = new UI('volumeContainer');
 
-            ui.visualiser = new AudioVisualiser();
+            ui.visualiser = new AudioVisualiser('voice');
         },
 
         initLoadingScreen: ()=> {
             let tag = LZString.decompress(consts.ego);
             let gID = vars.getElementByID;
             let c = vars.UI.loadingContainer = gID('loadingScreen');
+
+            gID('i_logo').className = 'i_logo';
+
             let vDiv = gID('l_version');
             let vText = `<div>${tag}</div><div>Version ${vars.version}</div>`;
             vDiv.innerHTML = vText;

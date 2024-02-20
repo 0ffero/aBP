@@ -489,6 +489,15 @@ audio {
 
 }
 
+#i_logo {
+    opacity: 0;
+}
+.i_logo {
+    transition: 750ms;
+
+    opacity: 1 !important;
+}
+
 #l_version{
     align-items: center;
     color: #0b4e6f;

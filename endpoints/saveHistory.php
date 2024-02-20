@@ -7,7 +7,7 @@ if (!isset($_POST['history'])) { // history wasnt passed
     exit;
 };
 
-$cacheDir = './cache/';
+$cacheDir = './cache/history/';
 if (!is_dir($cacheDir)) { mkdir($cacheDir); };
 
 $history = $_POST['history'];
@@ -45,8 +45,7 @@ if ($latest_filename!='') {
 
 
 // THIS ISNT DUPE DATA, SAVE IT
-
-$dateString = date('Ymd_His');
+$dateString = date('Ymd_H');
 file_put_contents($cacheDir . $dateString . '.log',$history);
 
 $op = ['COMPLETE'=>'Successfully saved the history data!'];

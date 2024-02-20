@@ -70,4 +70,26 @@ let HTTPRequest = class {
         debugger;
     }
 
+    saveHistory(history) {
+        if (!history) return;
+        if (!checkType(history,'array')) {
+            console.error(`History is invalid (it should be in its original array format)`);
+            return false;
+        };
+
+        history = JSON.stringify(history);
+
+        let url = `endpoints/saveHistory.php`;
+        let handler = this.saveHistoryHandler;
+        let post = `history=${encodeURIComponent(history)}`;
+        this.doRequest(url,post,handler);
+    }
+
+    saveHistoryHandler(rs) {
+        if (!rs.COMPLETE) {
+            console.error(`Error flushing history to disk!`);
+            return false;
+        };
+    }
+
 };
