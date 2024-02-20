@@ -25,11 +25,14 @@ div {
 
 #versionText {
     align-items: center;
+    background-image: url(../assets/images/2.png);
+    background-repeat: no-repeat;
+    background-position: center;
     color: #8db8d7;
     flex-direction: column;
     height: 128px;
     justify-content: space-around;
-    margin-left: 15px;
+    background-size: inherit;
 }
 
 #fileList {

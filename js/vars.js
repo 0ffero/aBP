@@ -258,7 +258,7 @@ var vars = {
             let vText = `<div>${tag}</div><div>Version ${vars.version}</div>`;
             vDiv.innerHTML = vText;
 
-            vars.getElementByID('versionText').innerHTML = `<div>aBP 2</div>${vText}`;
+            vars.getElementByID('versionText').innerHTML = `<div>aBP</div>${vText}`;
 
             c.hide = ()=> {
                 let delay = 2000; // how long the loading screen anim takes (set in css)
