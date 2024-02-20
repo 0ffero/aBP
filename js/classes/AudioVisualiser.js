@@ -148,6 +148,9 @@ this.AudioVisualiser = class {
         index = index+1<this.types.length ? index+1 : 0;
 
         this.type=this.types[index];
+
+        vars.App.visType = this.type;
+        vars.localStorage.saveVisualiserType();
     }
 
     update() {

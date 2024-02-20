@@ -1,6 +1,6 @@
 "use strict"
 var vars = {
-    version: '1.05',
+    version: '1.05b',
 
     DEBUG: true,
 
@@ -38,10 +38,10 @@ var vars = {
             };
             vars.App.volume = lS[`${lV.pre}_volume`]*1;
 
-            if (!lS[`${lV.pre}_volume`]) {
-                lS[`${lV.pre}_volume`] = 10;
+            if (!lS[`${lV.pre}_visType`]) {
+                lS[`${lV.pre}_visType`] = 'music';
             };
-            vars.App.volume = lS[`${lV.pre}_volume`]*1;
+            vars.App.visType = lS[`${lV.pre}_visType`];
         },
 
         saveRecent: ()=> {
@@ -53,6 +53,13 @@ var vars = {
             lS[`${lV.pre}_recent`] = JSON.stringify(pV.recent);
 
             vars.player.saveIconFlash();
+        },
+
+        saveVisualiserType: ()=> {
+            let lS = window.localStorage;
+            let lV = vars.localStorage;
+
+            lS[`${lV.pre}_visType`] = vars.App.visType;
         },
 
         saveVolume: ()=> {
@@ -237,7 +244,7 @@ var vars = {
 
             ui.volumeClass = new UI('volumeContainer');
 
-            ui.visualiser = new AudioVisualiser('voice');
+            ui.visualiser = new AudioVisualiser(vars.App.visType);
         },
 
         initLoadingScreen: ()=> {
